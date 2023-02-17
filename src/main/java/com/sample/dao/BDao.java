@@ -10,13 +10,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class BDao {
-    BDto dto = null;
-    Connection connection = null;
+
     DataSource dataSource = null;
-    PreparedStatement preparedStatement = null;
-    ResultSet resultSet = null;
 
     public BDao() {
+        Connection connection = null;
         try {
             Context init = new InitialContext();
             dataSource = (DataSource) init.lookup("java:comp/env/jdbc/postgresql");
@@ -27,12 +25,13 @@ public class BDao {
         }
     }
     public void write(String bName, String bTitle, String bContent) {
-        // TODO Auto-generated method stub
 
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             String query = "insert into mvc_board (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent) " +
-                    "values (mvc_board_seq.nextval, ?, ?, ?, 0, mvc_board_seq.currval, 0, 0 )";
+                    "values (nextval('mvc_board_seq'), ?, ?, ?, 0, currval('mvc_board_seq'), 0, 0 )";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, bName);
             preparedStatement.setString(2, bTitle);
@@ -50,9 +49,7 @@ public class BDao {
                 e2.printStackTrace();
             }
         }
-
     }
-
 
 
     public ArrayList<BDto> list() {
@@ -103,6 +100,8 @@ public class BDao {
 
 
     private void upHit(String strId){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             String query = "UPDATE mvc_board SET bhit = bhit + 1 WHERE bid = " + strId + "";
@@ -118,6 +117,11 @@ public class BDao {
 
     public BDto contentView(String strId) {
         upHit(strId);
+
+        BDto dto = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
             connection = dataSource.getConnection();
@@ -145,15 +149,10 @@ public class BDao {
             e.printStackTrace();
         } finally {
             try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if(connection != null) {
-                    connection.close();
-                }
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if(connection != null) connection.close();
+
             } catch (Exception e2) {
 
             }
@@ -162,6 +161,9 @@ public class BDao {
     }
 
     public void delete(String strId){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
         try {
             connection = dataSource.getConnection();
             String query="delete from mvc_board where bId=?";
@@ -174,6 +176,9 @@ public class BDao {
     }
     public BDto reply_view(String str) {
         BDto dto = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
             connection = dataSource.getConnection();
@@ -213,9 +218,13 @@ public class BDao {
     public void reply(String bId, String bName, String bTitle, String bContent, String bGroup, String bStep, String bIndent) {
         replyShape(bGroup, bStep);
 
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
         try {
             connection = dataSource.getConnection();
-            String query = "insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, ?, ?, ?, ?, ?, ?)";
+            String query = "insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) " +
+                    "values (nextval('mvc_board_seq'), ?, ?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, bName);
             preparedStatement.setString(2, bTitle);
@@ -241,6 +250,8 @@ public class BDao {
         }
     }
     private void replyShape(String strGroup, String strStep) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             String query = "update mvc_board set bStep = bStep + 1 where bGroup = ? and bStep > ?";
@@ -261,6 +272,9 @@ public class BDao {
     }
 
     public void modify(int bId, String bName, String bTitle, String bContent) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
         try {
             connection = dataSource.getConnection();
             String query = "UPDATE mvc_board "

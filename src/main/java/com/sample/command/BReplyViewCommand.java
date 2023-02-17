@@ -13,7 +13,7 @@ public class BReplyViewCommand implements BCommand{
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
-        String bId = request.getParameter("bId");
+        String bId = request.getParameter("bid");
         BDao dao = new BDao();
         BDto dto = dao.reply_view(bId);
 

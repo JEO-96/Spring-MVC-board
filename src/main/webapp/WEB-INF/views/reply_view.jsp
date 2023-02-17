@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<table width="500" cellpadding="0" cellspacing="0" border="1">
 		<form action="reply" method="post">
 			<input type="hidden" name="bid" value="${reply_view.bid}">
@@ -39,6 +38,5 @@
 			</tr>
 		</form>
 	</table>
-	
 </body>
 </html>

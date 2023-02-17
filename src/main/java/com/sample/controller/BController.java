@@ -61,7 +61,7 @@ public class BController {
     public String reply_view(HttpServletRequest request, Model model) {
         System.out.println("reply_view()");
         model.addAttribute("request", request);
-        command = new BReplyCommand();
+        command = new BReplyViewCommand();
         command.execute(model);
         return "reply_view";
     }

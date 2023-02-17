@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<td> 이름 </td>
-				<td> <input type="text" name="bname" value="${content_view.biame}"></td>
+				<td> <input type="text" name="bname" value="${content_view.bname}"></td>
 			</tr>
 			<tr>
 				<td> 제목 </td>
